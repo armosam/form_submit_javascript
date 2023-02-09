@@ -4,7 +4,7 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  background-color: rgb(224, 255, 226);
+  background-color: rgb(255, 249, 235);
 }
 
 .title {
@@ -22,7 +22,7 @@ body {
   top: 30px;
   right: 5px;
   pointer-events: none;
-  z-index: 2;
+  z-index: 0;
 }
 .icon.icon-success {
   fill: green;
@@ -119,4 +119,56 @@ body {
 }
 .promo a {
   color: white;
+}
+
+/** Modal Dialog */
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal.open {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+.modal-bg {
+  position: absolute;
+  background: rgb(237, 233, 218);
+  width: 100%;
+  height: 100%;
+  opacity: 85%;
+}
+.modal-container {
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+  padding: 30px;
+  box-shadow: 0px 0px 20px #aaaaaa;
+}
+.modal-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  color: red;
+  background: none;
+  border: 0px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-error {
+  color: red;
+  font-weight: bold;
 }/*# sourceMappingURL=style.css.map */

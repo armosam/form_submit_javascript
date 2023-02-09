@@ -3,8 +3,8 @@
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
-    background-color: rgb(224, 255, 226);
+    font-family: 'Open Sans', sans-serif;
+    background-color: rgb(255 249 235);
 }
 
 .title {
@@ -22,7 +22,7 @@ body {
     top: 30px;
     right: 5px;
     pointer-events: none;
-    z-index: 2;
+    z-index: 0;
 
     &.icon-success {
         fill: green;
@@ -38,7 +38,7 @@ body {
     margin: 3rem auto;
     padding: 3rem;
     border: 1px solid #ddd;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     background-color: white;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -47,7 +47,7 @@ body {
     font-weight: bold;
     display: block;
     color: #333;
-    margin-bottom: .25rem;
+    margin-bottom: 0.25rem;
     color: #2d3748;
 }
 
@@ -59,7 +59,7 @@ body {
     border: 1px solid #cbd5e0;
     line-height: 1.25;
     background-color: white;
-    padding: .65rem .75rem;
+    padding: 0.65rem 0.75rem;
     border-radius: 0.25rem;
     box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
 
@@ -89,7 +89,7 @@ body {
 }
 
 .error-message {
-    font-size: .85rem;
+    font-size: 0.85rem;
     color: red;
 }
 
@@ -97,7 +97,7 @@ body {
     background-color: rgb(34, 137, 64);
     padding: 1rem 2rem;
     border: none;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     color: white;
     font-weight: bold;
     display: block;
@@ -112,14 +112,65 @@ body {
 
 .promo {
     color: white;
-    opacity: .75;
+    opacity: 0.75;
     margin: 1rem auto;
     max-width: 460px;
-    background: rgba(255, 255, 255, .2);
+    background: rgba(255, 255, 255, 0.2);
     padding: 20px;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
 
     a {
         color: white;
+    }
+}
+
+/** Modal Dialog */
+
+.modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.open {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0s;
+    }
+    &-bg {
+        position: absolute;
+        background: rgb(237 233 218);
+        width: 100%;
+        height: 100%;
+        opacity: 85%;
+    }
+    &-container {
+        border-radius: 10px;
+        background: #fff;
+        position: relative;
+        padding: 30px;
+        box-shadow: 0px 0px 20px #aaaaaa;
+    }
+    &-close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        outline: none;
+        appearance: none;
+        color: red;
+        background: none;
+        border: 0px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    &-error {
+        color: red;
+        font-weight: bold;
     }
 }
