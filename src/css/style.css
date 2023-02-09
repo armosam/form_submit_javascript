@@ -107,6 +107,9 @@ body {
 .button:hover {
   filter: brightness(120%);
 }
+.button:disabled {
+  background-color: rgb(154, 154, 154);
+}
 
 .promo {
   color: white;

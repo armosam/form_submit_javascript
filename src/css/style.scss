@@ -108,6 +108,9 @@ body {
     &:hover {
         filter: brightness(120%);
     }
+    &:disabled {
+        background-color: rgb(154 154 154);
+    }
 }
 
 .promo {
