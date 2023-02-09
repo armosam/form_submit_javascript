@@ -1,21 +1,21 @@
 /**
- * Class to validate and send data to the backend 
+ * Class to validate and send data to the backend
+ * The code is going to send data to the endpoint that specialized in the action of html form
  */
-class FormValidator {
+class FormManager {
     constructor(form, fields) {
         this.form = form
         this.fields = fields
     }
 
     initialize() {
-        this.validateOnChange()
-        this.onSubmit()
+        this.listenEvents()
     }
 
     /**
      * Adds event listeners for data change in the fields
      */
-    validateOnChange() {
+    listenEvents() {
         let self = this
         this.fields.forEach(field => {
             const input = document.querySelector(`#${field}`)
@@ -27,20 +27,18 @@ class FormValidator {
                 self.validateFields(event.target)
             })
         })
-    }
 
-    /**
-     * Adds event listener to validate data for form submision
-     */
-    onSubmit() {
-        let self = this
-        this.form.addEventListener('submit', async e => {
+        // Submit event for form
+        this.form.addEventListener('submit', e => {
             e.preventDefault()
             let status = true
             self.fields.forEach(field => {
                 const input = document.querySelector(`#${field}`)
                 status = (status && self.validateFields(input))
             })
+            if (status) {
+                this.sendFormData();
+            }
         })
     }
 
@@ -52,7 +50,7 @@ class FormValidator {
         let status = 'success'
         let message = null
 
-        if (field.hasAttribute('required') && field.value.trim() === "") {
+        if (field.value.trim() === "") {
             status = 'error'
             message = `${field.previousElementSibling.innerText} cannot be blank`
         }
@@ -98,7 +96,7 @@ class FormValidator {
      */
     setStatus(field, message, status) {
         const errorMessage = field.parentElement.querySelector('.error-message')
-        if (field.parentElement.querySelector('.icon')) { 
+        if (field.parentElement.querySelector('.icon')) {
             field.parentElement.querySelector('.icon').remove()
         }
 
@@ -143,5 +141,111 @@ class FormValidator {
         return iconSvg
     }
 
+    /**
+     * Send form data using fetch
+     */
+    sendFormData() {
+        const formData = new FormData(this.form)
+        const plainFormData = Object.fromEntries(formData.entries())
+        const formDataJsonString = JSON.stringify(plainFormData)
 
+        this.startLoading()
+
+        fetch(this.form.action, {
+            body: formDataJsonString,
+            method: this.form.method,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                this.showResult(data)
+            })
+            .catch((err) => {
+                const data = { success: false, errors: [{ msg: err.message }] }
+                this.showResult(data)
+            })
+    }
+
+    /**
+     * Open modal to show result of form submision
+     */
+    showResult(data) {
+        const self = this
+        const modal = document.getElementById('modal-one')
+        const modalContainer = modal.querySelector('.modal-container')
+
+        const exitButton = document.createElement('button')
+        exitButton.classList.add('modal-close', 'modal-exit')
+        exitButton.innerHTML = 'X'
+        modalContainer.appendChild(exitButton)
+
+        const { success, errors } = data || {}
+
+        if (!success && errors) {
+            const title = document.createElement('h2')
+            const titleText = document.createTextNode("Failed to submit!")
+            title.appendChild(titleText)
+            title.classList.add('modal-error')
+            modalContainer.appendChild(title)
+
+            errors.forEach(err => {
+                const errMsgElement = document.createElement('h3')
+                const errMsgText = document.createTextNode(err.msg)
+                errMsgElement.appendChild(errMsgText)
+                modalContainer.appendChild(errMsgElement)
+            })
+        } else {
+            const title = document.createElement('h2')
+            const titleText = document.createTextNode("Form submitted successfully")
+            title.appendChild(titleText)
+            modalContainer.appendChild(title)
+            self.cleanupForm()
+        }
+
+        modal.classList.add('open')
+        self.stopLoading()
+        const exits = modal.querySelectorAll('.modal-exit')
+        exits.forEach(function (exit) {
+            exit.addEventListener('click', function (event) {
+                event.preventDefault()
+                modal.classList.remove('open')
+                while (modalContainer.firstChild) {
+                    modalContainer.removeChild(modalContainer.firstChild);
+                }
+                //window.location = window.location.href
+            })
+        });
+    }
+
+    /**
+     * Disables a button and sets the name as Sending...
+     */
+    startLoading() {
+        const btn = this.form.querySelector('button')
+        this.buttonName = btn.innerHTML
+        btn.innerHTML = 'Sending...'
+        btn.disabled = true
+    }
+
+    /**
+     * Enable button and restore original name of button
+     */
+    stopLoading() {
+        const btn = this.form.querySelector('button')
+        btn.innerHTML = this.buttonName
+        btn.disabled = false
+    }
+
+    /**
+     * Cleans up form data
+     */
+    cleanupForm() {
+        this.fields.forEach(field => {
+            const input = document.querySelector(`#${field}`)
+            input.value = ''
+        })
+    }
 }

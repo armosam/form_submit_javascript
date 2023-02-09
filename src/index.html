@@ -1,52 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/style.css" rel="stylesheet" />
-    <title>Submit Form Using JavaScript</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="./css/style.css" rel="stylesheet" />
+        <title>Submit Form Using JavaScript</title>
+    </head>
+    <body>
 
-    <div class="container">
-        <h2 class="title">Create a new account</h2>
-        <form action="/api/signup" class="form">
+        <div class="container">
+            <h2 class="title">Create a new account</h2>
+            <form method="POST" action="http://127.0.0.1:5000/auth/signup" class="form" enctype="application/x-www-form-urlencoded" autocomplete="off">
+                <div class="input-group">
+                    <label for="name" class="label">Full Name</label>
+                    <input id="name" name="name" type="text" class="input" placeholder="Enter your name" autocomplete="off" />
+                    <span class="error-message"></span>
+                </div>
 
-            <div class="input-group">
-                <label for="username" class="label">Username</label>
-                <input id="username" type="text" class="input" placeholder="Please enter your username" required>
-                <span class="error-message"></span>
+                <div class="input-group">
+                    <label for="email" class="label">Email</label>
+                    <input id="email" name="email" type="email" class="input" placeholder="Enter valid email address" autocomplete="off" />
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password" class="label">Password</label>
+                    <input id="password" name="password" type="password" class="input" placeholder="Enter password" autocomplete="off" />
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password_confirmation" class="label">Password Confirmation</label>
+                    <input id="password_confirmation" name="passwordConfirmation" type="password" class="input" placeholder="Confirm your password" autocomplete="off" />
+                    <span class="error-message"></span>
+                </div>
+
+                <button type="submit" class="button">Create Account</button>
+            </form>
+        </div>
+        <div class="modal" id="modal-one">
+            <div class="modal-bg modal-exit"></div>
+            <div class="modal-container">
             </div>
-
-            <div class="input-group">
-                <label for="email" class="label">Email</label>
-                <input id="email" type="email" class="input" placeholder="Please enter valid email address" autocomplete>
-                <span class="error-message"></span>
-            </div>
-
-            <div class="input-group">
-                <label for="password" class="label">Password</label>
-                <input id="password" type="password" class="input" placeholder="Please enter password">
-                <span class="error-message"></span>
-            </div>
-
-            <div class="input-group">
-                <label for="password_confirmation" class="label">Password Confirmation</label>
-                <input id="password_confirmation" type="password" class="input" placeholder="Please confirm your password">
-                <span class="error-message"></span>
-            </div>
-
-            <input type="submit" class="button" value="Create account">
-
-        </form>
-    </div>
-    <script src="./js/script.js"></script>
-    <script>
-        const form = document.querySelector('.form')
-        const fields = ["username", "email", "password", "password_confirmation"]
-        const validator = new FormValidator(form, fields)
-        validator.initialize()
-    </script>
-</body>
+        </div>
+        <script src="./js/script.js"></script>
+        <script>
+            const form = document.querySelector('.form');
+            const validator = new FormManager(form, ['name', 'email', 'password', 'password_confirmation']);
+            validator.initialize();
+        </script>
+    </body>
 </html>
