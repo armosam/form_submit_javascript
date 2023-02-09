@@ -41,5 +41,12 @@
 
         </form>
     </div>
+    <script src="./js/script.js"></script>
+    <script>
+        const form = document.querySelector('.form')
+        const fields = ["username", "email", "password", "password_confirmation"]
+        const validator = new FormValidator(form, fields)
+        validator.initialize()
+    </script>
 </body>
 </html>
